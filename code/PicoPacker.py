@@ -1,8 +1,11 @@
 # PicoPacker is a tool to merge and minify lua files for use in the virtual console pico-8
 # Made by @sorensaket
 
+# if debug mode. Keeps linefeeds and carriage returns to make pico8 errors more readable
+debug = True
+
 # imports
-import os, re
+import os, re, datetime
 
 #set to the file extension of "to-be-merged" files
 ext = '.lua'
@@ -16,7 +19,8 @@ dist = 'dist.lua'
 
 #current data
 cdata = ""
-
+if debug:
+  cdata += "-- Compiled at: " + str(datetime.datetime.now()) + "\n"
 # number of files
 fnum = 0
 
@@ -35,8 +39,12 @@ for path, subdirs, files in os.walk(src_path):
       data = open(f)
       # for each line in target file
       for l in data:
-          # remove all comments tabs, linefeeds and carriage returns
-          s = re.sub(r'(--).*$|(//).*$|\t|\n|\r','', l)
+          if debug:
+            # remove all comments and tabs
+            s = re.sub(r'(--).*$|(//).*$|\t','', l)
+          else:
+            # remove all comments, tabs, linefeeds and carriage returns
+            s = re.sub(r'(--).*$|(//).*$|\t|\n|\r','', l)
           # if the string is not empty 
           if s:
             cdata+= s + " "
@@ -44,8 +52,14 @@ for path, subdirs, files in os.walk(src_path):
       data.close()
 # if found any files
 if fnum > 0:
-  # remove unnecessary whitespace 
-  cdata = re.sub(r'\s+', ' ', cdata)
+  if debug:
+    # remove all unnecessary linefeeds
+    cdata = re.sub(r'[^\S ]+', '\n', cdata)
+    # renive all unnecessary spaces
+    cdata = re.sub(r'  +', ' ', cdata)
+  else:
+    # remove all unnecessary whitespace 
+    cdata = re.sub(r'\s+', ' ', cdata)
   # write to dist
   with open(dist, 'w') as f:
     f.write(cdata)

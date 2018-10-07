@@ -1,30 +1,20 @@
 -- generation
+roomtype = 2
 
 function newroom(right)
-	local enemies = tagget("enemy")
-	
-	for i in all(enemies) do
-		del(entities, i)
+	-- delete all entities but the player
+	for i in all(entities)  do 
+		if i.tag != "player" then
+			del(entities, i)
+		end
 	end
-	
-	local col = tagget("collectable")
-	
-	for i in all(col) do
-		del(entities, i)
-	end
-	
-	local particle = tagget("particle")
-	
-	for i in all(particle) do
-		del(entities, i)
-	end
-	
+
 	clearroom()
 	tr = generateroom(right)
 	setroom(tr)
 end
 
-roomtype = 2
+
 function generateroom(right)
 	local temproom = createroom(roomtype)
 	
@@ -38,7 +28,6 @@ function generateroom(right)
 	
 	
 	for x = 0, 15 do
-
 		chunksize = flr(rnd(4))+1
 		mincy = chunksize + 1
 		maxcy = 15 - (chunksize+1)

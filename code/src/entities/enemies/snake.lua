@@ -12,13 +12,14 @@ function enemy_snake ()
         -- physics --
         hasgravity=true,
         xacc = 0.3, -- acceleration
-           xmax = 0.3,
+        xmax = 0.3,
         right=true,
         
         -- visuals
-        cs=16,
-        jspr={16,17},
-        wspr={16,17},
+        sprs    ={x=1,y=1},
+        cs      =16,
+        jspr    ={16,17},
+        wspr    ={16,17},
         animspd = 0.12,
         
         init = function(this)
@@ -58,7 +59,7 @@ function enemy_snake ()
         end,
         hit = function(this)
             sfx(2)
-            score+=1
+            data.ek+=1
                blood(this.x+this.boffset.x,this.y+this.boffset.y)
                del(entities,this)
         end

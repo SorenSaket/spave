@@ -3,12 +3,13 @@ currentroom = {}
 
 currentmap = {}
 
+-- 
 function createroom(fill)
  room = {}
  for i = 0, 15 do
   room[i] = {}
   for j = 0, 15 do
-  	room[i][j] = fill -- fill the values here
+  	room[i][j] = fill
   end
  end
  return room
@@ -17,26 +18,14 @@ end
 --	use to set the current map with mset
 function setroom(r)
 	for x = 0, 15 do
-  for y = 0, 15 do
-  	cts = r[x][y]
-  	if(cts > 0)then
- 			cspr = tilesets[cts].tiles[gettileid(r,x,y,cts)]
-  		mset(x,y,cspr.sprid)
-  	end
-  end
- end
-end
-
-function renderroom(r)
-	for x = 0, 15 do
-  for y = 0, 15 do
-  	cts = r[x][y]
-  	if(cts > 0)then
- 			cspr = tilesets[cts].tiles[gettileid(r,x,y,cts)]
-  		spr(cspr.sprid,x*8,y*8,1,1,cspr.flipx,cspr.flipy)
-  	end
-  end
- end
+		for y = 0, 15 do
+			cts = r[x][y]
+			if(cts > 0)then
+				cspr = tilesets[cts].tiles[gettileid(r,x,y,cts)]
+				mset(x,y,cspr.sprid)
+			end
+		end
+	end
 end
 
 function gettileid(r,x,y,t)
@@ -46,7 +35,7 @@ function gettileid(r,x,y,t)
 	right = 0
 	
 	if(x+1 < 16 and r[x+1][y] == t) or x+1 >= 16 then
- 	right = 1
+ 		right = 1
 	end
 	if(x-1 > -1 and r[x-1][y] == t) or x-1 <= -1 then
 		left = 1
@@ -71,8 +60,8 @@ end
 
 function fillcol(r,row,num)
 	for y = 0, 15 do
-   r[row][y] = num
- end
+   	r[row][y] = num
+ 	end
 	return r
 end
 
@@ -91,8 +80,8 @@ end
 
 function clearroom()
 	for x = 0, 15 do
-  for y = 0, 15 do
-  	mset(x,y,0)
-  end
- end
+		for y = 0, 15 do
+			mset(x,y,0)
+		end
+	end
 end

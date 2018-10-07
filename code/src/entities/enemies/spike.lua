@@ -7,11 +7,12 @@ function enemy_spike ()
         vkb=3,
         
         -- collision --
-           box				 = {x=7,y=5},
-           boffset = {x=1,y=3},
+        box     ={x=7,y=5},
+        boffset ={x=1,y=3},
         
         -- visuals
-        wspr=36,
+        sprs    ={x=1,y=1},
+        wspr    =36,
         
         init = function(this)
             addstatics(this)

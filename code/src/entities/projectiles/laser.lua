@@ -1,4 +1,4 @@
-function projectile_lazer ()
+function projectile_laser ()
     return{
         tag = "projectile",
         x = 0,
@@ -11,8 +11,8 @@ function projectile_lazer ()
         tolerance = 4,
         
         -- collision --
-           box				 = {x=25,y= 5},
-           boffset = {x=-1,y=-2},
+        box     = {x=25,y= 5},
+        boffset = {x=-1,y=-2},
         
         st= 1,
         
@@ -24,30 +24,22 @@ function projectile_lazer ()
             this.y2 = _y2
             
             for e in all(tagget("enemy")) do
-                   local xd = this.x-this.x2
-                   local xdt = this.x - e.x
-                   if (xd > 0 and xdt > 0) or (xd < 0 and xdt < 0)then
-                    if abs(xdt-4) < abs(xd) then
-                        if abs((this.y-4) - e.y) < 8 then
-                            e.hit(e)
-                        end
-                    end
-                   end
-               end
-               
+                if (iscolliding(this,e))then
+                    e.hit(e)
+                end
+            end
         end,
         update = function(this)
             this.lifetime -= 1/stat(7)
-         if this.lifetime <= 0 then
-             del(entities, this)
-         end
-            
+            if this.lifetime <= 0 then
+                del(entities, this)
+            end
         end,
         draw = function(this)
             drawlaser(this.x,this.y,this.x2,this.y2, this.lifetime/this.st)
         end
     }
-   end
+end
 
 function drawlaser(x1,y1,x2,y2,i)
     if i > .5 then

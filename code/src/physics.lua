@@ -16,8 +16,8 @@ function iscolliding(a,b)
 		x=b.x+b.boffset.x,
 		y=b.y+b.boffset.y}
 	local bmax = {
-		x=b.x+a.boffset.x+b.box.x,
-		y=b.y+a.boffset.y+b.box.y}
+		x=b.x+b.boffset.x+b.box.x,
+		y=b.y+b.boffset.y+b.box.y}
 	
 	if (amax.x < bmin.x) then return false end -- a is left of b
 	if (amin.x > bmax.x) then return false end -- a is right of b
@@ -32,4 +32,13 @@ function issolid(x,y)
 	else
 		return false
 	end
+end
+
+function issolidc(x,y,f)
+	for i in all(f) do
+		if(fget(mget(x/8,y/8)) == i)then
+			return true
+		end
+	end
+	return false
 end

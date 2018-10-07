@@ -1,59 +1,62 @@
 p = {
-	tag = "player",
-	hitjump	=false,
+	tag 			="player",
+	hitjump		=false,
 	
 	-- stats --
-	health=3,
-	firerate=1,
-	damage=1,
-	range=3,
-	firetimer=1,
+	health		=3,	-- current health TODO add max health
+	firerate		=1,	--
+	damage		=1,	--
+	range			=3,	--
+	firetimer	=.1,	--
 	
-	invtime=1.6,
-	invtimer=0,
+	invtime		=1.4,
+	invtimer		=0,
 	
 	-- physics --
-	hasgravity=true,
-	xacc = 0.2, -- acceleration
-	xmax = 1.3, -- max speed
-	jvmin= 0.1, -- min jump velocity
-	jv			= 0.4, -- jump velocity
-	jvmax= 6,			-- max jump height
+	hasgravity	=true,-- does use gravity
+	xacc 			=0.2, -- acceleration
+	xmax 			=1.3, -- max speed
+	jvmin			=0.1, -- min jump velocity
+	jv				=0.4, -- jump velocity
+	jvmax			=6,	-- max jump height
 	
 	-- collision --
-	box				 = {x=8,y=8},
-	boffset = {x=0,y=0},
+	box		= {x=8,y=8},--
+	boffset	= {x=0,y=0},--
 	
+
 	-- visuals
-	cs=1,
-	jspr={4},   -- jumpsprite
-	wspr={2,3},-- walk sprites
-	animspd = 0.12,
-	animtimer=0,  -- walk sprite timer
+	sprs    		={x=1,y=1},
+	cs				=1,		-- current sprite (idle sprite)
+	jspr			={4},		-- jumpsprite
+	wspr			={2,3},	-- walk sprites
+	animspd 		=0.12,	-- animation speed
+	animtimer	=0,  		-- walk sprite timer
 	    
-    init = function(this)
-        this = addstatics(this)
-        add(entities,p)
-    end,
-    update = function(this)
-            controlplayer()
-            if this.invtimer > 0 then
-                this.invtimer-= 1/stat(7)
-            end
-            updateentity(this)
-    end,
-    draw = function(this)
-        drawentity(this)
-    end,
-    hit = function(this, dmg,hkb,vkb)
-        if this.invtimer <= 0 then
-        this.invtimer = this.invtime
-        sfx(2)
-        this.health-= dmg
-        this.xv += hkb
-        this.yv += vkb
-        end
-    end
+	init = function(this)
+		this = addstatics(this)
+		add(entities,p)
+	end,
+	update = function(this)
+		if this.invtimer > 0 then
+			this.invtimer-= 1/stat(7)
+		end
+		
+		controlplayer()
+		updateentity(this)
+	end,
+	draw = function(this)
+		drawentity(this)
+	end,
+	hit = function(this, dmg,hkb,vkb)
+		if this.invtimer <= 0 then
+			this.invtimer = this.invtime
+			sfx(2)
+			this.health-= dmg
+			this.xv += hkb
+			this.yv += vkb
+		end
+	end
 }
 
 function controlplayer()
@@ -64,14 +67,14 @@ function controlplayer()
 	elseif btn(4) then
 		sfx(1)
 		p.firetimer = p.firerate
-		local pjt = projectile_lazer()
+		local pjt = projectile_laser()
 		
 		if p.flipped then
+			pjt.boffset.x = -26
 			pjt.init(pjt,p.x,p.y+4,p.x-p.range*8,p.y+4) 
-			pjt.boffset.x = -pjt.box.x
 		else
-			pjt.init(pjt,p.x+8,p.y+4,p.x+8+p.range*8,p.y+4) 		
 			pjt.boffset.x = 0
+			pjt.init(pjt,p.x+8,p.y+4,p.x+8+p.range*8,p.y+4)
 		end
 		add(entities, pjt)
 	end
@@ -101,12 +104,10 @@ function controlplayer()
 	if p.x > 128 or p.y > 128 then
 		p.x = 1
 		p.y = 64
-		
- 	newroom(true)
+ 		newroom(true)
 	elseif p.x < 0 then
 		p.x = 127
 		p.y = 64
- 	
- 	newroom(false)
+ 		newroom(false)
 	end
 end

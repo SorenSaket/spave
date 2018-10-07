@@ -6,6 +6,12 @@
 -- common functions
 --
 
+function movetowardsdir(p, t)
+	edir={	x = t.x - p.x,
+			y = t.y - p.y}
+	return v_normalize(edir)
+end
+
 function movetowards(enemy, player)
 	
 	if dist({x=enemy.x,y=enemy.y},{x=player.x,y=player.y}) > 4 then
@@ -26,27 +32,6 @@ function movetowards(enemy, player)
  	enemy.x -= edir.x*0.3
  	enemy.y -= edir.y*0.3
 	end
-end
-
--- draw a rotated sprite *wipw*
-function rspr(n,x,y,angle)
-
-		xs = (n%16) * 8
-		ys = (n%16) * 8
-		for xi=0,8 do
- 		for yi=0,8 do
- 			cx = x*cos(angle)-y*sin(angle)
- 			cy = y*cos(angle)+x*sin(angle)
- 			col = sget(xs+xi, ys+yi)
- 			pset(cx,cy,col)
- 			printh(
- 			xs.." _ "..
- 			ys.." _ "..
- 			cx.." _ "..
- 			cy.." _ "..
- 			col, "@clip")
- 		end
-		end
 end
 
 function tostring(any)

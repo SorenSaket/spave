@@ -76,31 +76,31 @@ function enemy_fbb ()
 
       end,
       hit = function(this)
-         local xdir = p.x-this.x
-         blooda(this.x+16,this.y+16,32,xdir/abs(xdir),1,2,2)
-         sfx(2)
-         this.health-=1
+        local xdir = p.x-this.x
+        blooda(this.x+16,this.y+16,32,xdir/abs(xdir),1,2,2)
+        sfx(2)
+        this.health-=1
 
-         if(this.health < 10) then
+        if(this.health < 10) then
             this.eyesprpos.x = 116
             this.shootspd = 2
             this.rotspd = 6
             this.targetspd=9
-         end
-         if(this.health < 5) then
+        end
+        if(this.health < 5) then
             this.eyesprpos.x = 112
             this.eyesprpos.y = 84
             this.shootspd = 1.5
             this.rotspd = 5
             this.targetspd=8
-         end
+        end
 
-         if this.health < 0 then
+        if this.health < 0 then
             data.ek+=1
             blood(this.x+this.boffset.x,this.y+this.boffset.y)
             blood(this.x+this.boffset.x,this.y+this.boffset.y)
             del(entities,this)
-         end
+        end
       end
    }
 end

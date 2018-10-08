@@ -37,9 +37,11 @@ function enemy_fb ()
             drawentity(this)
         end,
         hit = function(this)
+            local xdir = p.x-this.x
+            blooda(this.x+4,this.y+4,32,xdir/abs(xdir),1,2,2)
             sfx(2)
             data.ek+=1
-            blood(this.x+this.boffset.x,this.y+this.boffset.y)
+            
             del(entities,this)
         end
     }

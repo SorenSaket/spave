@@ -3,13 +3,13 @@ p = {
 	hitjump		=false,
 	
 	-- stats --
-	health		=3,	-- current health TODO add max health
+	health			=3,	-- current health TODO add max health
 	firerate		=1,	--
-	damage		=1,	--
+	damage			=1,	--
 	range			=3,	--
-	firetimer	=.1,	--
+	firetimer		=.1,	--
 	
-	invtime		=1.4,
+	invtime			=1.4,
 	invtimer		=0,
 	
 	-- physics --
@@ -23,7 +23,6 @@ p = {
 	-- collision --
 	box		= {x=8,y=8},--
 	boffset	= {x=0,y=0},--
-	
 
 	-- visuals
 	sprs    		={x=1,y=1},

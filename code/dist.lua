@@ -1,4 +1,4 @@
--- Compiled at: 2018-10-07 22:20:28.082574
+-- Compiled at: 2018-10-08 13:26:14.441050
 data = {
  score = 0,
  time = 0,
@@ -967,7 +967,6 @@ data = {
  boffset= {x=0,y=0},
  
  
- 
  sprs ={x=1,y=1},
  cs=1,
  jspr={4},
@@ -1118,9 +1117,11 @@ data = {
  drawentity(this)
  end,
  hit = function(this)
+ local xdir = p.x-this.x
+ blooda(this.x+4,this.y+4,32,xdir/abs(xdir),1,2,2)
  sfx(2)
  data.ek+=1
- blood(this.x+this.boffset.x,this.y+this.boffset.y)
+ 
  del(entities,this)
  end
  }

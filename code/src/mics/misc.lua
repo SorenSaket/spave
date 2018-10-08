@@ -51,7 +51,7 @@ function tostring(any)
     if type(any)=="table" then
         local str = "{ "
         for k,v in pairs(any) do
-            str=str..tostring(k).."->"..tostring(v).." "
+            str=str..tostring(k)..":"..tostring(v).." "
         end
         return str.."}"
     end

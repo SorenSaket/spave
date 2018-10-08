@@ -57,43 +57,10 @@ states = {
 		p.x = 40
 		p.y = 80
 		-- create room
-		tr = createroom(0)
-		--tr = fillcube(tr,7,7,9,6,0)
-		--tr = fillcube(tr,9,14,3,6,0)
-		
-		tr = fillrow(tr,0,1)
-		tr = fillrow(tr,15,1)
-		tr = fillcol(tr,0,1)
-		tr = fillcol(tr,15,1)
-		
-		
-		tr[2][12] = 2
-		tr[3][12] = 2
-		tr[4][12] = 2
+		tr = createroom(1)
+		tr = fillcube(tr,7,7,9,6,0)
+		tr = fillcube(tr,9,14,3,6,0)
 
-		tr[11][12] = 2
-		tr[12][12] = 2
-		tr[13][12] = 2
-
-		tr[6][9] = 2
-		tr[7][9] = 2
-		tr[8][9] = 2
-		tr[9][9] = 2
-
-		tr[2][6] = 2
-		tr[3][6] = 2
-		tr[4][6] = 2
-
-		tr[11][6] = 2
-		tr[12][6] = 2
-		tr[13][6] = 2
-
-		tr[8][15] = 0
-		tr[7][15] = 0
-
-		local b = enemy_fbb()
-		b.init(b)
-		add(entities,b)
 		
 		setroom(tr)
 	end,
@@ -143,12 +110,79 @@ states = {
 		end
 	end
 	},
+	-------- score screen --------
 	{
 		init = function()
+			clet = 1
+			letterobjs = {}
+			username = ""
+
+			local xoffset = 8
+			local yoffset = 8
+			local xspacing = 8
+			local yspacing = 8
+			rows = 3
+			
+			local letx = xoffset
+			local lety = yoffset
+			
+			for i=1,#letters do
+				local col
+				if i == 1 or i == 5 or i == 9 or i == 15 or i == 21 then
+					col = 8
+				else
+					col = 12
+				end
+
+				add(letterobjs, {letter=sub(letters,i,i),x=letx,y=lety,color=col})
+
+				letx+=xspacing
+				
+				if i % flr(#letters/rows) == 0 then
+					color(11)
+					lety+=yspacing
+					letx=xoffset
+				end
+			end
 		end,
 		update = function()
+			if btnp(0) then
+				clet-=1
+			end
+			if btnp(1) then
+				clet+=1
+			end
+			if btnp(2) then
+				clet-=flr(#letterobjs/rows)
+			end
+			if btnp(3) then
+				clet+=flr(#letterobjs/rows)
+			end
+
+			if clet > #letterobjs then
+				clet = clet % #letterobjs + (#letterobjs%rows)
+			elseif clet < 1 then
+				clet = clet + #letterobjs - (#letterobjs%rows)
+			end
+
+			if btnp(4) then
+				username = username .. letterobjs[clet].letter
+			end
 		end,
 		draw = function()
+			rectfill(letterobjs[clet].x-1,
+						letterobjs[clet].y-1,
+						letterobjs[clet].x+3,
+						letterobjs[clet].y+5,10)
+
+			for i in all(letterobjs) do
+				color(i.color)
+				pset(i.x,i.y,i.color)
+				print(i.letter,i.x,i.y)
+			end
+			color(11)
+			print(clet,64,64)
+			print(username,64,72)
 		end,
 	}
 }

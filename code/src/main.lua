@@ -27,7 +27,7 @@ debug = false
 function _init()
 	cartdata("ss_spave")
 	--music(0)
-	setgamestate(3)
+	setgamestate(1)
 end
 
 function _update60()

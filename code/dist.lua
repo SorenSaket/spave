@@ -1,4 +1,4 @@
--- Compiled at: 2018-10-08 21:37:53.124319
+-- Compiled at: 2018-10-09 10:33:34.677526
 data = {
  score = 0,
  time = 0,
@@ -127,7 +127,7 @@ data = {
  local yoffset = 8
  local xspacing = 8
  local yspacing = 8
- rows = 3
+ rows = 2
  
  local letx = xoffset
  local lety = yoffset
@@ -189,6 +189,8 @@ data = {
  color(11)
  print(clet,64,64)
  print(username,64,72)
+ print(tonumbers("ab"),2,82)
+ print(letterindex("z"),2,100)
  end,
  }
  } 
@@ -327,6 +329,25 @@ data = {
  
  function toletters(numbers)
  
+ end
+ 
+ function tonumbers(string)
+ local nums = ""
+ for i = 0,#string do
+ nums = nums .. letterindex(sub(string,i,i))
+ nums = nums .. "0"
+ end
+ 
+ local dn = "0." .. nums
+ return tonum(dn)
+ end
+ 
+ function letterindex(let)
+ for i = 0,#letters do
+ if sub(letters,i,i) == let then
+ return i
+ end
+ end
  end 
  
  
@@ -356,7 +377,7 @@ data = {
  function _init()
  cartdata("ss_spave")
  
- setgamestate(3)
+ setgamestate(1)
  end
  
  function _update60()
@@ -1390,7 +1411,8 @@ data = {
  hit = function(this)
  sfx(2)
  data.ek+=1
- blood(this.x+this.boffset.x,this.y+this.boffset.y)
+ local xdir = p.x-this.x
+ blooda(this.x+4,this.y+4,32,xdir/abs(xdir),1,2,2)
  del(entities,this)
  end
  }

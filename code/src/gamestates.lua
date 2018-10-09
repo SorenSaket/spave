@@ -121,7 +121,7 @@ states = {
 			local yoffset = 8
 			local xspacing = 8
 			local yspacing = 8
-			rows = 3
+			rows = 2
 			
 			local letx = xoffset
 			local lety = yoffset
@@ -183,6 +183,8 @@ states = {
 			color(11)
 			print(clet,64,64)
 			print(username,64,72)
+			print(tonumbers("ab"),2,82)
+			print(letterindex("z"),2,100)
 		end,
 	}
 }

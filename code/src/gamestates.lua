@@ -52,6 +52,8 @@ states = {
 	-------- game loop --------
 	{
 	init = function()
+		uipos = {x=2,y=2}
+		
 		-- add player
 		p.init(p)
 		p.x = 40
@@ -95,19 +97,10 @@ states = {
 			end
 			e.draw(e)
 		end
-    
-		color(0)
-		rectfill(2,2,17,12)
-		color(12)
-		line(3,11,3+13*(1-p.firetimer),11)
 		
-		if p.health == 3 then
-			spr(240,2,2,2,1)
-		elseif p.health == 2 then
-			spr(242,2,2,2,1)
-		else
-			spr(244,2,2,2,1)
-		end
+		ui_pstats(uipos.x,uipos.y)
+		ui_money(2,118,data.coins)
+
 	end
 	},
 	-------- score screen --------

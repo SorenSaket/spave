@@ -2,7 +2,7 @@ function enemy_fb ()
     return {
         tag= "enemy",
         -- stats --
-        chaserange=8,
+        chaserange=7,
         
         -- collision --
         box	    = {x=8,y=8},
@@ -10,7 +10,7 @@ function enemy_fb ()
         
         -- physics --
         hasgravity=false,
-        spd=0.2,
+        spd=0.18,
         hkb=5,
         vkb=1,
         

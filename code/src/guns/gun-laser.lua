@@ -1,5 +1,7 @@
 function gun_laser()
     return {
+        name = "laser of doom",
+        price = 75,
         firerate = 1,
         shoot = function(this)
             sfx(1)

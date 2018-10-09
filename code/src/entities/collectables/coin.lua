@@ -8,7 +8,7 @@ function coin ()
         hasgravity=false,
         -- visuals
         sprs    ={x=1,y=1},
-        wspr    ={150,151,152,151,150,150},
+        wspr    ={144,145,146,145,144,144},
         animspd = 0.12,
         
         init = function(this)

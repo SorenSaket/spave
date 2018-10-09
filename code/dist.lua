@@ -1,4 +1,4 @@
--- Compiled at: 2018-10-09 10:33:34.677526
+-- Compiled at: 2018-10-09 14:54:20.602972
 data = {
  score = 0,
  time = 0,
@@ -58,6 +58,8 @@ data = {
  
  {
  init = function()
+ uipos = {x=2,y=2}
+ 
  
  p.init(p)
  p.x = 40
@@ -102,18 +104,9 @@ data = {
  e.draw(e)
  end
  
- color(0)
- rectfill(2,2,17,12)
- color(12)
- line(3,11,3+13*(1-p.firetimer),11)
+ ui_pstats(uipos.x,uipos.y)
+ ui_money(2,118,data.coins)
  
- if p.health == 3 then
- spr(240,2,2,2,1)
- elseif p.health == 2 then
- spr(242,2,2,2,1)
- else
- spr(244,2,2,2,1)
- end
  end
  },
  
@@ -1005,6 +998,7 @@ data = {
  hitjump=false,
  
  
+ maxhealth =3,
  health=3,
  firerate=1,
  damage=1,
@@ -1121,7 +1115,7 @@ data = {
  hasgravity=false,
  
  sprs ={x=1,y=1},
- wspr ={150,151,152,151,150,150},
+ wspr ={144,145,146,145,144,144},
  animspd = 0.12,
  
  init = function(this)
@@ -1142,7 +1136,7 @@ data = {
  return {
  tag= "enemy",
  
- chaserange=8,
+ chaserange=7,
  
  
  box = {x=8,y=8},
@@ -1150,7 +1144,7 @@ data = {
  
  
  hasgravity=false,
- spd=0.2,
+ spd=0.18,
  hkb=5,
  vkb=1,
  
@@ -1592,6 +1586,24 @@ data = {
  line(x1, y1+1, x2, y2, 2)
  line(x1, y1-1, x2, y2, 2)
  end
+ end function gun_laser()
+ return {
+ firerate = 1,
+ shoot = function(this)
+ sfx(1)
+ p.firetimer = p.firerate
+ local pjt = projectile_laser()
+ 
+ if p.flipped then
+ pjt.boffset.x = -26
+ pjt.init(pjt,p.x,p.y+4,p.x-p.range*8,p.y+4) 
+ else
+ pjt.boffset.x = 0
+ pjt.init(pjt,p.x+8,p.y+4,p.x+8+p.range*8,p.y+4)
+ end
+ add(entities, pjt)
+ end
+ }
  end 
  
  
@@ -1710,4 +1722,39 @@ data = {
  local wdnv = v_mults( v_mults( n, dot ), 2.0 )
  local refv = v_subv( v, wdnv )
  return refv
+ end function ui_money(x,y,n)
+ spr(144,x,y)
+ color(10)
+ print(n,x+10,y+1)
+ end function ui_pstats(x,y)
+ local width=32
+ 
+ ui_pstats_weapon(x,y)
+ ui_pstats_healthbar(x+12,y,width)
+ ui_pstats_firebar(x+12,y+9,width)
+ end
+ 
+ function ui_pstats_weapon(x,y)
+ color(0)
+ rectfill(x,y,x+11,y+11)
+ spr(194,x+2,y+2)
+ end
+ 
+ function ui_pstats_healthbar(x,y,w)
+ 
+ rectfill(x,y,x+w,y+8,0)
+ 
+ local ph = p.health / p.maxhealth
+ rectfill(x+1,y+1,x+max(0,((w-1)*ph)),y+7,8)
+ 
+ local htxt = p.health .. "/" .. p.maxhealth
+ print(htxt, x + w/2 - (#htxt*2) + 1,y+2,7)
+ end
+ 
+ function ui_pstats_firebar(x,y,w)
+ 
+ rectfill(x,y,x+w,y+2,0)
+ 
+ local ph = 1-p.firetimer
+ rectfill(x+1,y+1,x+max(0,((w-1)*ph)),y+1,12)
  end 

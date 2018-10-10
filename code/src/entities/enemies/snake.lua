@@ -6,8 +6,8 @@ function enemy_snake ()
         vkb=2,
         
         -- collision --
-           box				 = {x=8,y=8},
-           boffset = {x=0,y=0},
+        box         = {x=8,y=8},
+        boffset     = {x=0,y=0},
         
         -- physics --
         hasgravity=true,
@@ -31,26 +31,26 @@ function enemy_snake ()
                 
                 -- if stoming
                 if p.yv > 0 then
-                       p.yv=-2
-                       this.hit(this)
+                    p.yv=-2
+                    this.hit(this)
                 else
                     p.hit(p,1,(dif/abs(dif))*this.hkb,-this.vkb)
                 end
-               end
+            end
             
             -- movement
             if this.grounded then
-             if this.right then
-                 this.xv += this.xacc
-                 if issolid(this.x+9, this.y+4) or not issolid(this.x+9, this.y+12)  then
-                     this.right = false
-                 end
-             else
-                 this.xv -= this.xacc
-                 if issolid(this.x-1, this.y+4) or not issolid(this.x-1, this.y+12)  then
-                     this.right = true
-                 end
-             end
+                if this.right then
+                    this.xv += this.xacc
+                    if issolid(this.x+9, this.y+4) or not issolid(this.x+9, this.y+12)  then
+                        this.right = false
+                    end
+                else
+                    this.xv -= this.xacc
+                    if issolid(this.x-1, this.y+4) or not issolid(this.x-1, this.y+12)  then
+                        this.right = true
+                    end
+                end
             end
             updateentity(this)
         end,
@@ -61,7 +61,7 @@ function enemy_snake ()
             sfx(2)
             data.ek+=1
             local xdir = p.x-this.x
-            blooda(this.x+4,this.y+4,32,xdir/abs(xdir),1,2,2)
+            blooda(this.x+4,this.y+4,32,(xdir/abs(xdir)),2,1,2)
             del(entities,this)
         end
     }

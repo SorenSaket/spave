@@ -1,4 +1,4 @@
--- Compiled at: 2018-10-09 14:54:20.602972
+-- Compiled at: 2018-10-10 11:42:09.882820
 data = {
  score = 0,
  time = 0,
@@ -1406,7 +1406,7 @@ data = {
  sfx(2)
  data.ek+=1
  local xdir = p.x-this.x
- blooda(this.x+4,this.y+4,32,xdir/abs(xdir),1,2,2)
+ blooda(this.x+4,this.y+4,32,(xdir/abs(xdir)),2,1,2)
  del(entities,this)
  end
  }
@@ -1588,6 +1588,8 @@ data = {
  end
  end function gun_laser()
  return {
+ name = "laser of doom",
+ price = 75,
  firerate = 1,
  shoot = function(this)
  sfx(1)

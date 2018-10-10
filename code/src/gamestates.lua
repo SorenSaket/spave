@@ -62,7 +62,6 @@ states = {
 		tr = createroom(1)
 		tr = fillcube(tr,7,7,9,6,0)
 		tr = fillcube(tr,9,14,3,6,0)
-
 		
 		setroom(tr)
 	end,

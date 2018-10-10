@@ -1,4 +1,4 @@
--- Compiled at: 2018-10-10 11:42:09.882820
+-- Compiled at: 2018-10-10 22:10:13.605615
 data = {
  score = 0,
  time = 0,
@@ -29,7 +29,7 @@ data = {
  end,
  update = function()
  t+=0.01
- if btnp(4)then
+ if btnp(4) then
  setgamestate(2)
  end
  end,
@@ -69,7 +69,6 @@ data = {
  tr = fillcube(tr,7,7,9,6,0)
  tr = fillcube(tr,9,14,3,6,0)
  
- 
  setroom(tr)
  end,
  update = function()
@@ -106,84 +105,21 @@ data = {
  
  ui_pstats(uipos.x,uipos.y)
  ui_money(2,118,data.coins)
- 
  end
  },
  
  {
  init = function()
- clet = 1
- letterobjs = {}
- username = ""
  
- local xoffset = 8
- local yoffset = 8
- local xspacing = 8
- local yspacing = 8
- rows = 2
- 
- local letx = xoffset
- local lety = yoffset
- 
- for i=1,#letters do
- local col
- if i == 1 or i == 5 or i == 9 or i == 15 or i == 21 then
- col = 8
- else
- col = 12
- end
- 
- add(letterobjs, {letter=sub(letters,i,i),x=letx,y=lety,color=col})
- 
- letx+=xspacing
- 
- if i % flr(#letters/rows) == 0 then
- color(11)
- lety+=yspacing
- letx=xoffset
- end
- end
  end,
  update = function()
- if btnp(0) then
- clet-=1
- end
- if btnp(1) then
- clet+=1
- end
- if btnp(2) then
- clet-=flr(#letterobjs/rows)
- end
- if btnp(3) then
- clet+=flr(#letterobjs/rows)
- end
  
- if clet > #letterobjs then
- clet = clet % #letterobjs + (#letterobjs%rows)
- elseif clet < 1 then
- clet = clet + #letterobjs - (#letterobjs%rows)
- end
- 
- if btnp(4) then
- username = username .. letterobjs[clet].letter
- end
  end,
  draw = function()
- rectfill(letterobjs[clet].x-1,
- letterobjs[clet].y-1,
- letterobjs[clet].x+3,
- letterobjs[clet].y+5,10)
- 
- for i in all(letterobjs) do
- color(i.color)
- pset(i.x,i.y,i.color)
- print(i.letter,i.x,i.y)
- end
- color(11)
- print(clet,64,64)
- print(username,64,72)
- print(tonumbers("ab"),2,82)
- print(letterindex("z"),2,100)
+ color(7)
+ print("You had " .. data.coins .. " coins",8,8)
+ print("You killed " .. data.ek .. " enemies",8,16)
+ print("Your score was: " .. (data.ek + data.coins),8,24)
  end,
  }
  } 
@@ -319,9 +255,9 @@ data = {
  add(entities,e)
  end letters = "abcdefghijklmnopqrstuvwxyz"
  
- 
  function toletters(numbers)
- 
+ local str = tostr(numbers)
+ return getletter(sub(str,1,2)) .. getletter(sub(str,2,4)) .. getletter(sub(str,4,6))
  end
  
  function tonumbers(string)
@@ -333,6 +269,10 @@ data = {
  
  local dn = "0." .. nums
  return tonum(dn)
+ end
+ 
+ function getletter(num)
+ return sub(letters,num,num)
  end
  
  function letterindex(let)
@@ -1000,10 +940,9 @@ data = {
  
  maxhealth =3,
  health=3,
- firerate=1,
- damage=1,
- range=3,
- firetimer=.1,
+ range=1,
+ firetimer=0.1,
+ currentgun =nil,
  
  invtime=1.4,
  invtimer=0,
@@ -1030,6 +969,7 @@ data = {
  
  init = function(this)
  this = addstatics(this)
+ this.gun = gun_laser()
  add(entities,p)
  end,
  update = function(this)
@@ -1050,6 +990,10 @@ data = {
  this.health-= dmg
  this.xv += hkb
  this.yv += vkb
+ 
+ if this.health <= 0 then
+ setgamestate(3)
+ end
  end
  end
  }
@@ -1060,18 +1004,8 @@ data = {
  if p.firetimer > 0 then
  p.firetimer-= 1/stat(7)
  elseif btn(4) then
- sfx(1)
- p.firetimer = p.firerate
- local pjt = projectile_laser()
- 
- if p.flipped then
- pjt.boffset.x = -26
- pjt.init(pjt,p.x,p.y+4,p.x-p.range*8,p.y+4) 
- else
- pjt.boffset.x = 0
- pjt.init(pjt,p.x+8,p.y+4,p.x+8+p.range*8,p.y+4)
- end
- add(entities, pjt)
+ p.firetimer = p.gun.firerate
+ p.gun.fire(p.gun)
  end
  
  
@@ -1144,7 +1078,7 @@ data = {
  
  
  hasgravity=false,
- spd=0.18,
+ spd=0.12,
  hkb=5,
  vkb=1,
  
@@ -1491,7 +1425,45 @@ data = {
  pset(this.x,this.y,8)
  end
  }
- end function projectile_fbb_shot ()
+ end function projectile_boomerang ()
+ return{
+ tag = "projectile",
+ x = 0,
+ y = 0,
+ xv=0,
+ yv=0,
+ 
+ damage = 1,
+ 
+ 
+ box = {x=5,y=5},
+ boffset = {x=0,y=0},
+ 
+ rot = 0,
+ 
+ init = function(this)
+ 
+ 
+ end,
+ update = function(this)
+ for e in all(tagget("enemy")) do
+ if (iscolliding(this,e))then
+ e.hit(e)
+ del(entities, this)
+ end
+ end
+ if issolid(this.x,this.y) then
+ del(entities, this)
+ end
+ 
+ rot+= time()/5
+ end,
+ draw = function(this)
+ sspr(this.x,this.y,120,83,6,5,false,false,3,2.5,this.rot,1,1)
+ end
+ }
+ end
+ function projectile_fbb_shot ()
  return{
  tag = "projectile",
  x = 0,
@@ -1586,22 +1558,42 @@ data = {
  line(x1, y1+1, x2, y2, 2)
  line(x1, y1-1, x2, y2, 2)
  end
- end function gun_laser()
+ end function gun_boomerang()
  return {
- name = "laser of doom",
- price = 75,
- firerate = 1,
- shoot = function(this)
+ name ="boomeragun",
+ price =75,
+ spr =192,
+ firerate =0.5,
+ fire = function(this)
  sfx(1)
- p.firetimer = p.firerate
  local pjt = projectile_laser()
  
  if p.flipped then
  pjt.boffset.x = -26
- pjt.init(pjt,p.x,p.y+4,p.x-p.range*8,p.y+4) 
+ pjt.init(pjt,p.x,p.y+4,p.x-p.range*24,p.y+4) 
  else
  pjt.boffset.x = 0
- pjt.init(pjt,p.x+8,p.y+4,p.x+8+p.range*8,p.y+4)
+ pjt.init(pjt,p.x+8,p.y+4,p.x+8+p.range*24,p.y+4)
+ end
+ add(entities, pjt)
+ end
+ }
+ end function gun_laser()
+ return {
+ name ="laser of doom",
+ price =75,
+ spr =193,
+ firerate =1,
+ fire = function(this)
+ sfx(1)
+ local pjt = projectile_laser()
+ 
+ if p.flipped then
+ pjt.boffset.x = -26
+ pjt.init(pjt,p.x,p.y+4,p.x-p.range*24,p.y+4) 
+ else
+ pjt.boffset.x = 0
+ pjt.init(pjt,p.x+8,p.y+4,p.x+8+p.range*24,p.y+4)
  end
  add(entities, pjt)
  end
@@ -1739,7 +1731,7 @@ data = {
  function ui_pstats_weapon(x,y)
  color(0)
  rectfill(x,y,x+11,y+11)
- spr(194,x+2,y+2)
+ spr(p.gun.spr,x+2,y+2)
  end
  
  function ui_pstats_healthbar(x,y,w)

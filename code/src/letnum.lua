@@ -1,8 +1,8 @@
 letters = "abcdefghijklmnopqrstuvwxyz"
 
-
 function toletters(numbers)
-    
+    local str = tostr(numbers)
+    return getletter(sub(str,1,2)) .. getletter(sub(str,2,4)) .. getletter(sub(str,4,6))
 end
 
 function tonumbers(string)
@@ -14,6 +14,10 @@ function tonumbers(string)
 
     local dn = "0." .. nums
     return tonum(dn)
+end
+
+function getletter(num)
+    return sub(letters,num,num)
 end
 
 function letterindex(let)

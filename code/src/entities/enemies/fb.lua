@@ -10,7 +10,7 @@ function enemy_fb ()
         
         -- physics --
         hasgravity=false,
-        spd=0.18,
+        spd=0.12,
         hkb=5,
         vkb=1,
         

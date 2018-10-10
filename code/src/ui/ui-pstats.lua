@@ -9,7 +9,7 @@ end
 function ui_pstats_weapon(x,y)
    color(0)
    rectfill(x,y,x+11,y+11)
-   spr(194,x+2,y+2)
+   spr(p.gun.spr,x+2,y+2)
 end
 
 function ui_pstats_healthbar(x,y,w)

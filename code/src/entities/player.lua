@@ -3,15 +3,14 @@ p = {
 	hitjump		=false,
 	
 	-- stats --
-	maxhealth 	=3,
+	maxhealth 	=3,	--
 	health		=3,	-- current health TODO add max health
-	firerate		=1,	--
-	damage		=1,	--
-	range			=3,	--
-	firetimer	=.1,	--
+	range			=1,	--
+	firetimer	=0.1,	--
+	currentgun  =nil,	--
 	
-	invtime		=1.4,
-	invtimer		=0,
+	invtime		=1.4,	-- invincibility time
+	invtimer		=0,	-- timer
 	
 	-- physics --
 	hasgravity	=true,-- does use gravity
@@ -35,6 +34,7 @@ p = {
 	    
 	init = function(this)
 		this = addstatics(this)
+		this.gun = gun_laser()
 		add(entities,p)
 	end,
 	update = function(this)
@@ -55,6 +55,10 @@ p = {
 			this.health-= dmg
 			this.xv += hkb
 			this.yv += vkb
+
+			if this.health <= 0 then
+				setgamestate(3)
+			end
 		end
 	end
 }
@@ -65,18 +69,8 @@ function controlplayer()
 	if p.firetimer > 0 then
 		p.firetimer-= 1/stat(7)
 	elseif btn(4) then
-		sfx(1)
-		p.firetimer = p.firerate
-		local pjt = projectile_laser()
-		
-		if p.flipped then
-			pjt.boffset.x = -26
-			pjt.init(pjt,p.x,p.y+4,p.x-p.range*8,p.y+4) 
-		else
-			pjt.boffset.x = 0
-			pjt.init(pjt,p.x+8,p.y+4,p.x+8+p.range*8,p.y+4)
-		end
-		add(entities, pjt)
+		p.firetimer = p.gun.firerate
+		p.gun.fire(p.gun)
 	end
 	
 	-- vertical movement

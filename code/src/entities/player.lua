@@ -48,7 +48,7 @@ p = {
 	draw = function(this)
 		drawentity(this)
 	end,
-	hit = function(this, dmg,hkb,vkb)
+	hit = function(this,dmg,hkb,vkb)
 		if this.invtimer <= 0 then
 			this.invtimer = this.invtime
 			sfx(2)
@@ -98,10 +98,10 @@ function controlplayer()
 	if p.x > 128 or p.y > 128 then
 		p.x = 1
 		p.y = 64
- 		newroom(true)
+		newroom(true)
 	elseif p.x < 0 then
 		p.x = 127
 		p.y = 64
- 		newroom(false)
+		newroom(false)
 	end
 end

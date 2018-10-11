@@ -17,25 +17,31 @@ function enemy_slime ()
       
       -- visuals
       sprs     ={x=1,y=1},
-      cs       =16,
-      jspr     ={16,17},
-      wspr     ={16,17},
+      cs       =21,
+      jspr     ={22},
+      wspr     ={21,23,22,23,21},
       animspd  =0.12,
       
       init = function(this)
-         addstatics(this)
+        addstatics(this)
       end,
       update = function(this)
-         updateentity(this)
+        if p.x > this.x then
+            this.xv += this.xacc
+        elseif p.x < this.x then
+            this.xv -= this.xacc
+        end
+        
+        updateentity(this)
       end,
       draw = function(this)
-         drawentity(this)
+        drawentity(this)
       end,
       hit = function(this)
-         sfx(2)
-         data.ek+=1
-         blood(this.x+this.boffset.x,this.y+this.boffset.y)
-         del(entities,this)
+        sfx(2)
+        data.ek+=1
+        blood(this.x+this.boffset.x,this.y+this.boffset.y)
+        del(entities,this)
       end
    }
 end

@@ -43,10 +43,6 @@ states = {
 			end
 			color(11)
 			print("press z", 45,82)
-			local r = 0.5
-			print(cos(r),8,8)
-			print(sin(r),8,16)
-
 		end,
 	},
 	-------- game loop --------

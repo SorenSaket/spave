@@ -1,0 +1,22 @@
+if p.x > 128 or p.y > 128 then
+		
+		if(data.ek >= 8)then
+			newbossroom()
+			p.x = 8
+			p.y = 112
+		else 
+			newroom(true)
+			p.x = 1
+			p.y = 64
+		end
+	elseif p.x < 0 then
+		
+		if(data.ek >= 8)then
+			p.x = 8
+			p.y = 112
+		else
+			p.x = 127
+			p.y = 64
+			newroom(false)
+		end
+	end

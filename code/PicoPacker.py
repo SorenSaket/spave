@@ -2,7 +2,7 @@
 # Made by @sorensaket
 
 # if debug mode. Keeps linefeeds and carriage returns to make pico8 errors more readable
-debug = False
+debug = True
 
 # imports
 import os, re, datetime

@@ -57,7 +57,7 @@ p = {
 			this.yv += vkb
 
 			if this.health <= 0 then
-				setgamestate(3)
+				setgamestate(gamestate+1)
 			end
 		end
 	end

@@ -52,7 +52,7 @@ states = {
 		update = function()
 			t+=0.01
 			if btnp(4) then
-				setgamestate(2)
+				setgamestate(gamestate+1)
 			end
 		end,
 		draw = function()
@@ -137,7 +137,7 @@ states = {
 			-- if does not fit on scoreboard. rip
 			-- todo update to match with score
 			if savedata[#savedata].score > data.ek+data.coins then
-				setgamestate(4)
+				setgamestate(gamestate+1)
 			end
 
 			clet = 1
@@ -206,7 +206,7 @@ states = {
 
 			if #username == 3 then
 				data.username = username
-				setgamestate(4)
+				setgamestate(gamestate+1)
 			end
 		end,
 		draw = function()

@@ -1,7 +1,7 @@
 -- todo
 -- X 0. Global game data management
 -- X Leaderboards
--- redo auto tiling system to optimize token count
+-- 
 -- 1. laser enemy
 -- 2. time + points displayed
 -- 3. boss
@@ -18,17 +18,17 @@
 -- 6. super attack
 --			a) granade
 -- 7. paralaxing background
+-- redo auto tiling system to optimize token count
 
--- shows helpful information
+-- shows helpful debugging information
 debug = false
-
 
 -------- system functions --------
 function _init()
 	-- Set cart data once in first init
 	cartdata("ss_spave")
 	--music(0)
-	setgamestate(2)
+	setgamestate(1)
 end
 
 function _update60()

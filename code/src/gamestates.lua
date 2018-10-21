@@ -19,7 +19,8 @@ states = {
 	-------- title --------
 	{
 		init = function()
-			wait = 4
+			wait = 2
+			
 			fill = 0
 			yp = 0
 
@@ -33,6 +34,8 @@ states = {
 				elseif yp >= 1 then
 					if fill < 1 then
 						fill+=0.01
+					else
+						setgamestate(2)
 					end
 				end
 			end
